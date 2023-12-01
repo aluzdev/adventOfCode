@@ -1,32 +1,10 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { puzzle2 } from "./utils/puzzle2";
-import { purifyText } from "./utils/helperFunctions";
+
+import { puzzle2 } from "./utils/constants";
 
 function App() {
-  let purifiedText = purifyText(puzzle2);
-
-  function goodCoding(purifiedText) {
-    purifiedText = purifiedText.split("\n");
-
-    let result = 0;
-    for (let text of purifiedText) {
-      // console.log({ text });
-      let firstNumber = text[0];
-      let lastNumber = text[text.length - 1];
-
-      let firstAndLast = firstNumber + lastNumber;
-      // console.log({ firstAndLast });
-
-      result = result + Number(firstAndLast);
-      console.log({ result });
-    }
-    return result;
-  }
-
-  goodCoding(purifiedText);
-
   return (
     <>
       <div>
@@ -37,10 +15,8 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Advent of Code</h1>
-
-      <p>{purifiedText}</p>
-      <h1>{goodCoding(purifiedText)}</h1>
+      <h1>Advent of Code Day 2</h1>
+      <p>{puzzle2}</p>
     </>
   );
 }

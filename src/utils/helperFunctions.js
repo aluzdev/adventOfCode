@@ -36,3 +36,17 @@ export function purifyText(str) {
   let result = extractDigits(replaceNumbers(replaceEdgeCases(str)));
   return result;
 }
+
+export function firstPuzzleSolution(text) {
+  let purifiedText = purifyText(text);
+  purifiedText = purifiedText.split("\n");
+
+  let result = 0;
+  for (let text of purifiedText) {
+    let firstNumber = text[0];
+    let lastNumber = text[text.length - 1];
+    let firstAndLast = firstNumber + lastNumber;
+    result = result + Number(firstAndLast);
+  }
+  return result;
+}
