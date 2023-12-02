@@ -39,8 +39,8 @@ function App() {
       </div>
       <h1>Advent of Code</h1>
 
-      <p>{goodCoding(purifiedText)}</p>
-      <p>purifiedText: {purifiedText}</p>
+      <p>{purifiedText}</p>
+      <h1>{goodCoding(purifiedText)}</h1>
     </>
   );
 }
