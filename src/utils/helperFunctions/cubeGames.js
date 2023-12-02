@@ -23,8 +23,6 @@ export const parseGames = (gameString) => {
     });
   });
 
-  //   console.table(games);
-
   return games;
 };
 
@@ -52,8 +50,19 @@ export const filterGames = (
   });
 };
 
-export function extractGameNumber(gameString) {
-  console.log(gameString);
-  const match = gameString.match(/\d+/); // Regular expression to find one or more digits
-  return match ? Number(match[0]) : null; // Convert the matched string to a number
+export function sumGameIds(games) {
+  const arrayOfGameIds = games.map((game) => Number(game.match(/\d+/)[0]));
+  const sumOfGameIds = arrayOfGameIds.reduce((acc, curr) => acc + curr);
+  return sumOfGameIds; // 2239
+}
+
+/*
+  Question: What is the sum of the IDs of all possible games? 
+  1) transform text into some data structure (array)
+  2) filter impossible games 
+  3) add the ids of remaining games
+  4) return the sum
+  */
+export function cubeGamesSolution(games) {
+  return sumGameIds(filterGames(parseGames(games)));
 }
