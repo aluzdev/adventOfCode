@@ -26,7 +26,7 @@ export const transformIntoArray = (gameString) => {
   return games;
 };
 
-export const filterGames = (
+export const filterImpossibleGames = (
   games,
   maxRed = 12,
   maxGreen = 13,
@@ -38,6 +38,8 @@ export const filterGames = (
     acc[game.name].push(game);
     return acc;
   }, {});
+
+  console.log(Object.keys(groupedGames));
 
   // Filter out games based on the criteria
   return Object.keys(groupedGames).filter((gameName) => {
@@ -64,5 +66,5 @@ export function sumGameIds(games) {
   4) return the sum
   */
 export function cubeGamesSolution(puzzle2) {
-  return sumGameIds(filterGames(transformIntoArray(puzzle2)));
+  return sumGameIds(filterImpossibleGames(transformIntoArray(puzzle2)));
 }
