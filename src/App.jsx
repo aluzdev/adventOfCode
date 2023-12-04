@@ -4,7 +4,7 @@ import styled from "styled-components";
 import "./App.css";
 
 import { puzzle2 } from "./utils/constants";
-import { cubeGamesSolution } from "./utils/helperFunctions/cubeGames";
+import { cubeGamesPartTwoSolution } from "./utils/helperFunctions/cubeGames";
 
 const SmallLogos = styled.div`
   width: 100%;
@@ -27,7 +27,7 @@ function App() {
         </a>
       </SmallLogos>
       <h1>Advent of Code Day 2</h1>
-      <p>{cubeGamesSolution(puzzle2)}</p>
+      <p>{cubeGamesPartTwoSolution(puzzle2)}</p>
     </>
   );
 }

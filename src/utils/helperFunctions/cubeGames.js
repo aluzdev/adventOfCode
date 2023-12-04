@@ -1,32 +1,32 @@
-export const parseGames = (gameString) => {
+export const transformIntoArray = (gameString) => {
   const games = [];
   const gameLines = gameString.trim().split("\n");
 
   gameLines.forEach((line) => {
     const [gameName, rounds] = line.split(":");
-    const roundData = rounds.split(";").map((round) => round.trim());
+    const roundData = rounds.split(";");
 
     roundData.forEach((round, index) => {
-      const colors = round.split(",").reduce((acc, colorCount) => {
-        const [count, color] = colorCount.trim().split(" ");
-        acc[color] = parseInt(count, 10);
-        return acc;
-      }, {});
+      let rounds = round.split(",");
+      let colorCount = {};
+      for (let round of rounds) {
+        const [count, color] = round.trim().split(" ");
+        colorCount[color] = Number(count);
+      }
 
       games.push({
         name: gameName.trim(),
         round: index + 1,
-        red: colors.red || 0,
-        blue: colors.blue || 0,
-        green: colors.green || 0,
+        red: colorCount.red || 0,
+        blue: colorCount.blue || 0,
+        green: colorCount.green || 0,
       });
     });
   });
-
   return games;
 };
 
-export const filterGames = (
+export const filterImpossibleGames = (
   games,
   maxRed = 12,
   maxGreen = 13,
@@ -63,6 +63,26 @@ export function sumGameIds(games) {
   3) add the ids of remaining games
   4) return the sum
   */
-export function cubeGamesSolution(games) {
-  return sumGameIds(filterGames(parseGames(games)));
+export function cubeGamesSolution(puzzle2) {
+  return sumGameIds(filterImpossibleGames(transformIntoArray(puzzle2)));
+}
+
+export function cubeGamesPartTwoSolution(puzzle2) {
+  const games = puzzle2.split("\n");
+  let powerOfCubes = 0;
+
+  games.forEach((game) => {
+    const [_, rounds] = game.split(": ");
+    const cubeCounts = { red: 0, green: 0, blue: 0 };
+    rounds.split("; ").forEach((round) => {
+      round.split(", ").forEach((countAndColor) => {
+        const [count, color] = countAndColor.split(" ");
+        cubeCounts[color] = Math.max(cubeCounts[color], Number(count));
+      });
+    });
+    let powerOfCube = 1;
+    Object.values(cubeCounts).forEach((count) => (powerOfCube *= count));
+    powerOfCubes += powerOfCube;
+  });
+  return powerOfCubes;
 }
