@@ -39,8 +39,6 @@ export const filterImpossibleGames = (
     return acc;
   }, {});
 
-  console.log(Object.keys(groupedGames));
-
   // Filter out games based on the criteria
   return Object.keys(groupedGames).filter((gameName) => {
     const rounds = groupedGames[gameName];
@@ -67,4 +65,24 @@ export function sumGameIds(games) {
   */
 export function cubeGamesSolution(puzzle2) {
   return sumGameIds(filterImpossibleGames(transformIntoArray(puzzle2)));
+}
+
+export function cubeGamesPartTwoSolution(puzzle2) {
+  const games = puzzle2.split("\n");
+  let powerOfCubes = 0;
+
+  games.forEach((game) => {
+    const [_, rounds] = game.split(": ");
+    const cubeCounts = { red: 0, green: 0, blue: 0 };
+    rounds.split("; ").forEach((round) => {
+      round.split(", ").forEach((countAndColor) => {
+        const [count, color] = countAndColor.split(" ");
+        cubeCounts[color] = Math.max(cubeCounts[color], Number(count));
+      });
+    });
+    let powerOfCube = 1;
+    Object.values(cubeCounts).forEach((count) => (powerOfCube *= count));
+    powerOfCubes += powerOfCube;
+  });
+  return powerOfCubes;
 }
