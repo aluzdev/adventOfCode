@@ -3,8 +3,8 @@ import viteLogo from "/vite.svg";
 import styled from "styled-components";
 import "./App.css";
 
-import { puzzle2 } from "./utils/constants";
-import { cubeGamesPartTwoSolution } from "./utils/helperFunctions/cubeGames";
+import { schematic } from "./utils/constants";
+import { transformArray } from "./utils/helperFunctions/schematic";
 
 const SmallLogos = styled.div`
   width: 100%;
@@ -14,6 +14,27 @@ const SmallLogos = styled.div`
   align-items: center;
   margin: 0;
 `;
+
+function idk(schematic) {
+  const cachedSchematic = JSON.parse(sessionStorage.getItem("schematic"));
+  const newSchematic =
+    cachedSchematic ||
+    transformArray(schematic.split("\n").map((row) => row.split("")));
+  if (!cachedSchematic) {
+    sessionStorage.setItem("schematic", JSON.stringify(newSchematic));
+  }
+
+  const setOfSymbols = new Set();
+  for (let row of newSchematic) {
+    // console.log(row)
+    for (let char of row) {
+      // console.log(char);
+      setOfSymbols.add(char);
+    }
+    // console.log(setOfSymbols);
+  }
+  return setOfSymbols;
+}
 
 function App() {
   return (
@@ -27,7 +48,8 @@ function App() {
         </a>
       </SmallLogos>
       <h1>Advent of Code Day 2</h1>
-      <p>{cubeGamesPartTwoSolution(puzzle2)}</p>
+      {/* <p>{[...idk(schematic)].sort()}</p> */}
+      <p>{sessionStorage.getItem("schematic")}</p>
     </>
   );
 }
