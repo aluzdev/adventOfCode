@@ -4,7 +4,7 @@ import styled from "styled-components";
 import "./App.css";
 
 import { schematic } from "./utils/constants";
-import { transformArray } from "./utils/helperFunctions/schematic";
+import { findNumberIn2DArray } from "./utils/helperFunctions/schematic";
 
 const SmallLogos = styled.div`
   width: 100%;
@@ -32,25 +32,31 @@ const input = `467..114..
 .664.598..`;
 
 const symbols = ["#", "$", "%", "&", "*", "+", "-", "/", "=", "@"];
+let sum = 0;
 
 function lookForNumbers(schematic, i, j) {
-  let sum = 0;
-  const somethingWentTerriblyWrong =
-    i < 0 ||
-    i >= schematic.length ||
-    j < 0 ||
-    j >= schematic[i].length ||
-    !symbols.includes(schematic[i][j]);
-  if (somethingWentTerriblyWrong) return;
+  const foundTokens = [];
   const current = schematic[i][j];
-  const diagLeft = schematic[i + 1][j - 1];
-  const top = schematic[i + 1][j];
-  const diagRight = schematic[i + 1][j + 1];
-  const left = schematic[i][j - 1];
-  const right = schematic[i][j + 1];
-  const diagDownLeft = schematic[i - 1][j - 1];
-  const down = schematic[i - 1][j];
-  const diagDownRight = schematic[i - 1][j + 1];
+  const diagLeft = findNumberIn2DArray(schematic, [i - 1, j - 1]);
+  const top = findNumberIn2DArray(schematic, [i - 1, j]);
+  const diagRight = findNumberIn2DArray(schematic, [i - 1, j + 1]);
+  const left = findNumberIn2DArray(schematic, [i, j - 1]);
+  const right = findNumberIn2DArray(schematic, [i, j + 1]);
+  const diagDownLeft = findNumberIn2DArray(schematic, [i + 1, j - 1]);
+  const down = findNumberIn2DArray(schematic, [i + 1, j]);
+  const diagDownRight = findNumberIn2DArray(schematic, [i + 1, j + 1]);
+
+  foundTokens.push(
+    current,
+    diagLeft,
+    top,
+    diagRight,
+    left,
+    right,
+    diagDownLeft,
+    down,
+    diagDownRight
+  );
 
   console.log({
     current,
@@ -63,13 +69,19 @@ function lookForNumbers(schematic, i, j) {
     down,
     diagDownRight,
   });
+
+  const isNumber = (token) => typeof token === "number" && isFinite(token);
+
+  for (const token of foundTokens) {
+    if (isNumber(token)) sum += token;
+  }
+  console.log({ sum });
 }
 
 function idk(schematic) {
   const cachedSchematic = JSON.parse(sessionStorage.getItem("schematic"));
   const transformedSchematic =
-    cachedSchematic ||
-    transformArray(schematic.split("\n").map((row) => row.split("")));
+    cachedSchematic || schematic.split("\n").map((row) => row.split(""));
   if (!cachedSchematic) {
     sessionStorage.setItem("schematic", JSON.stringify(transformedSchematic));
   }
@@ -87,19 +99,19 @@ function idk(schematic) {
 }
 
 idk(input);
-console.log(sessionStorage.getItem("schematic").split(","));
+console.log("final sum: " + sum);
 
 function App() {
   return (
     <>
-      <SmallLogos>
+      {/* <SmallLogos>
         <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
         <a href="https://react.dev" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
-      </SmallLogos>
+      </SmallLogos> */}
       <h1>Advent of Code Day 2</h1>
       <P>{sessionStorage.getItem("schematic").split(",")}</P>
     </>
