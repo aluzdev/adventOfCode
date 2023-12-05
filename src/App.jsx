@@ -58,24 +58,14 @@ function lookForNumbers(schematic, i, j) {
     diagDownRight
   );
 
-  console.log({
-    current,
-    diagLeft,
-    top,
-    diagRight,
-    left,
-    right,
-    diagDownLeft,
-    down,
-    diagDownRight,
-  });
+  console.log({ foundTokens });
 
   const isNumber = (token) => typeof token === "number" && isFinite(token);
 
   for (const token of foundTokens) {
     if (isNumber(token)) sum += token;
   }
-  console.log({ sum });
+  // console.log({ sum });
 }
 
 function idk(schematic) {
@@ -98,7 +88,7 @@ function idk(schematic) {
   // console.log(char);
 }
 
-idk(input);
+idk(schematic);
 console.log("final sum: " + sum);
 
 function App() {
